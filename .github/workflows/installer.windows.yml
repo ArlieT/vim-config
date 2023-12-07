@@ -1,0 +1,18 @@
+# https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-powershell#adding-a-workflow-for-pester
+name: Powershell Installation Script
+on: push
+
+jobs:
+  pester-test:
+    name: Using Windows 
+    runs-on: windows-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Test installation script
+        run : |
+          choco install neovim -y
+          $env:path += ";C:\tools\neovim\nvim-win64\bin"
+          Invoke-Pester shell-scripts\installer.Tests.ps1
+        shell: pwsh
+    timeout-minutes: 5
